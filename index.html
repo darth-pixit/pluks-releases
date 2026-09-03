@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pluks — Select text. It's already copied.</title>
+  <meta name="description" content="Pluks auto-copies any text you select — no keyboard shortcut needed. Free and tiny, for macOS and Windows (beta).">
+  <link rel="canonical" href="https://pluks.app/">
+
+  <!-- Social cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pluks">
+  <meta property="og:title" content="Pluks — Select text. It's already copied.">
+  <meta property="og:description" content="Pluks auto-copies any text you select — no Ctrl+C needed. Free, for Mac, Windows, and Linux.">
+  <meta property="og:url" content="https://pluks.app/">
+  <meta property="og:image" content="https://pluks.app/og-card.png?v=3">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Select text. It's already copied. Free · Mac, Windows, Linux">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pluks — Select text. It's already copied.">
+  <meta name="twitter:description" content="Pluks auto-copies any text you select — no Ctrl+C needed. Free, for Mac, Windows, and Linux.">
+  <meta name="twitter:image" content="https://pluks.app/og-card.png?v=3">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Sentry browser SDK (PostHog ingest is hand-rolled in analytics.js) -->
+  <script src="https://browser.sentry-cdn.com/7.119.0/bundle.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">pluks</span>
+  <a class="nav-cta btn-download" data-dl-mac href="https://github.com/darth-pixit/pluks-releases/releases/latest">
+    <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+    </svg>
+    Download for Mac
+  </a>
+</nav>
+
+<div class="demo-toast" id="demo-toast">
+  <span class="demo-toast-icon">✦</span>
+  <span id="demo-toast-text"></span>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-label">Try it right now ↓</div>
+  <h1 class="hero-headline">
+    Select text.<br>It's already <em>copied</em>.
+  </h1>
+  <p class="hero-sub">
+    No Ctrl+C. No right-click. No nothing.<br>
+    Just select — Pluks does the rest.
+  </p>
+
+  <!-- Interactive demo -->
+  <div class="demo-card" id="demo-card">
+    <div class="demo-card-label">go on, select any text — anywhere on this page</div>
+    <p class="demo-text" id="demo-text">
+      The quick brown fox jumps over the lazy dog. Pluks makes copying effortless —
+      highlight any phrase here and watch what happens.
+    </p>
+  </div>
+
+  <div class="hero-actions">
+    <a class="btn-primary btn-download" id="dl-mac" data-dl-mac href="https://github.com/darth-pixit/pluks-releases/releases/latest">
+      <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      Download free for Mac
+    </a>
+    <p class="hero-meta">macOS 11+ · Apple Silicon &amp; Intel · <a href="#download">Windows 10/11 (beta)</a></p>
+  </div>
+</section>
+
+<!-- ─── STATS ────────────────────────────────────────────────────────────── -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">&lt; 10 MB</div>
+      <div class="stat-label">app size (not Electron)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">keystrokes required</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100% local</div>
+      <div class="stat-label">nothing leaves your machine</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─────────────────────────────────────────────────────── -->
+<section class="how" id="how">
+  <h2 class="section-title">How it works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">🖱️</div>
+      <h3>Select</h3>
+      <p>Drag your cursor over any text, or double-click a word. Works in any app.</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">✦</div>
+      <h3>Snagged</h3>
+      <p>Pluks instantly snags it to your clipboard — before you even lift your finger.</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">📋</div>
+      <h3>Paste</h3>
+      <p>Long-press wherever you want to paste. Your selection is already there — no Cmd+V needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HISTORY ───────────────────────────────────────────────────────────── -->
+<section class="history-section">
+  <div class="history-content">
+    <div class="history-text">
+      <span class="pill">New</span>
+      <h2>200 clips. Always within reach.</h2>
+      <p>
+        Every selection is saved — up to 200 entries. Press <kbd>Ctrl+Shift+V</kbd>
+        (or <kbd>⌘⇧V</kbd> on Mac) to open the history overlay instantly from any app.
+        Search, click, done.
+      </p>
+    </div>
+    <div class="history-mockup">
+      <div class="mockup-panel">
+        <div class="mockup-header">
+          <span class="mockup-brand">pluks</span>
+          <span class="mockup-count">4 / 200</span>
+        </div>
+        <div class="mockup-search">
+          <div class="mockup-search-inner">search history…</div>
+        </div>
+        <ul class="mockup-list">
+          <li class="mockup-item active">
+            <span class="mockup-preview">The quick brown fox jumps over…</span>
+            <span class="mockup-meta">42 chars · just now</span>
+          </li>
+          <li class="mockup-item">
+            <span class="mockup-preview">meeting@company.com</span>
+            <span class="mockup-meta">19 chars · 2m ago</span>
+          </li>
+          <li class="mockup-item">
+            <span class="mockup-preview">npm install --save-dev typescript</span>
+            <span class="mockup-meta">33 chars · 5m ago</span>
+          </li>
+          <li class="mockup-item">
+            <span class="mockup-preview">Ctrl+Shift+V to open history</span>
+            <span class="mockup-meta">28 chars · 8m ago</span>
+          </li>
+        </ul>
+        <div class="mockup-footer">↩ copy · ⌫ delete · esc close</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─────────────────────────────────────────────────────────── -->
+<section class="features">
+  <h2 class="section-title">The clipboard, finally fixed.</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Zero friction</h3>
+      <p>One 10-second setup step. Then never think about it again. Select text → it's in your clipboard. <a href="#faq">Why the setup step? →</a></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🪶</div>
+      <h3>Featherweight</h3>
+      <p>Under 10 MB. Uses virtually no CPU or RAM. Built in Rust with Tauri — not Electron.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Local-first</h3>
+      <p>Your selections never leave your machine. We collect anonymous, opt-out usage stats and crash reports — that's it. No cloud sync, no account, no content of what you copy is ever sent. <a href="privacy.html">How we use analytics →</a></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" style="width:28px;height:28px;">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+      </div>
+      <h3>Native on Mac &amp; Windows</h3>
+      <p>One universal Mac binary for Apple Silicon and Intel, living in your menu bar. On Windows 10/11 (beta) it sits in the system tray — same select-to-copy, zero setup.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎛️</div>
+      <h3>Stays out of your way</h3>
+      <p>Lives in your system tray. Enable, disable, or quit from a right-click menu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMPARISON ───────────────────────────────────────────────────────── -->
+<section class="compare" id="compare">
+  <h2 class="section-title">How Pluks stacks up</h2>
+  <p class="compare-sub">
+    The honest version — including the rows where the other tools win.
+    Facts checked June 2026; follow the links for each project's latest.
+  </p>
+
+  <div class="compare-table-wrap" tabindex="0" role="region" aria-label="Clipboard tools comparison">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th scope="col" class="compare-factor" aria-label="Factor"></th>
+          <th scope="col" class="col-pluks">
+            <span class="compare-name">pluks</span>
+            <span class="compare-tag">select-to-copy</span>
+          </th>
+          <th scope="col">
+            <a href="https://maccy.app" target="_blank" rel="noopener">Maccy</a>
+            <span class="compare-tag">menu-bar manager</span>
+          </th>
+          <th scope="col">
+            <a href="https://pasteapp.io" target="_blank" rel="noopener">Paste</a>
+            <span class="compare-tag">Apple-ecosystem manager</span>
+          </th>
+          <th scope="col">
+            <a href="https://raycast.com" target="_blank" rel="noopener">Raycast</a>
+            <span class="compare-tag">launcher with clipboard</span>
+          </th>
+          <th scope="col">
+            <a href="https://copyq.net" target="_blank" rel="noopener">CopyQ</a>
+            <span class="compare-tag">power-user manager</span>
+          </th>
+          <th scope="col">
+            <a href="https://ditto-cp.sourceforge.io" target="_blank" rel="noopener">Ditto</a>
+            <span class="compare-tag">Windows manager</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Copies the moment you select — no Ctrl+C</th>
+          <td class="col-pluks"><span class="c-yes">✓</span><span class="c-note">its whole job</span></td>
+          <td><span class="c-no">✗</span><span class="c-note">copy first</span></td>
+          <td><span class="c-no">✗</span><span class="c-note">copy first</span></td>
+          <td><span class="c-no">✗</span><span class="c-note">copy first</span></td>
+          <td><span class="c-part">~</span><span class="c-note">Linux/X11 only</span></td>
+          <td><span class="c-no">✗</span><span class="c-note">copy first</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Searchable clipboard history</th>
+          <td class="col-pluks"><span class="c-yes">✓</span><span class="c-note">200 clips</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">200 by default</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">unlimited</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">3 months on free plan<sup>1</sup></span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">unlimited</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">unlimited</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Price</th>
+          <td class="col-pluks"><span class="c-text">Free</span></td>
+          <td><span class="c-text">Free<sup>2</sup></span></td>
+          <td><span class="c-text">$9.99/yr or lifetime</span></td>
+          <td><span class="c-text">Free core · Pro $8/mo<sup>1</sup></span></td>
+          <td><span class="c-text">Free</span></td>
+          <td><span class="c-text">Free</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Platforms</th>
+          <td class="col-pluks"><span class="c-text">macOS · Windows (beta)</span></td>
+          <td><span class="c-text">macOS</span></td>
+          <td><span class="c-text">macOS · iPhone · iPad</span></td>
+          <td><span class="c-text">macOS · Windows · iOS</span></td>
+          <td><span class="c-text">Windows · macOS · Linux</span></td>
+          <td><span class="c-text">Windows</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Images &amp; files in history</th>
+          <td class="col-pluks"><span class="c-no">✗</span><span class="c-note">text only, for now</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Pin &amp; organize clips</th>
+          <td class="col-pluks"><span class="c-no">✗</span><span class="c-note">not yet</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">pins</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">pinboards</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">pins</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">tabs &amp; tags</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">groups</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Sync between devices</th>
+          <td class="col-pluks"><span class="c-no">✗</span></td>
+          <td><span class="c-no">✗</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">iCloud</span></td>
+          <td><span class="c-no">✗</span><span class="c-note">clips never sync<sup>3</sup></span></td>
+          <td><span class="c-no">✗</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">LAN only, encrypted</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Clips stay off the cloud</th>
+          <td class="col-pluks"><span class="c-yes">✓</span><span class="c-note">always</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">always</span></td>
+          <td><span class="c-part">~</span><span class="c-note">private iCloud when syncing</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">peer-to-peer LAN</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Skips password fields</th>
+          <td class="col-pluks"><span class="c-yes">✓</span><span class="c-note">automatic</span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">automatic<sup>4</sup></span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">automatic<sup>4</sup></span></td>
+          <td><span class="c-yes">✓</span><span class="c-note">automatic<sup>4</sup></span></td>
+          <td><span class="c-part">~</span><span class="c-note">manual ignore rules</span></td>
+          <td><span class="c-part">~</span><span class="c-note">manual excludes</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ol class="compare-footnotes">
+    <li>Raycast's free plan keeps 3 months of clipboard history; longer retention needs Pro ($8/mo billed annually).</li>
+    <li>Maccy is free from GitHub or Homebrew; the optional $9.99 Mac App Store copy is identical and supports the developer.</li>
+    <li>Raycast deliberately excludes clipboard contents from its Pro cloud sync — settings sync, clips don't.</li>
+    <li>Via the concealed-clipboard conventions password managers set — <code>org.nspasteboard.ConcealedType</code> on macOS, <code>ExcludeClipboardContentFromMonitorProcessing</code> on Windows.</li>
+  </ol>
+
+  <p class="compare-disclaimer">
+    All trademarks belong to their respective owners. Spotted something out of date?
+    <a href="mailto:parth.dixit@alumni.iitd.ac.in">Tell us</a> and we'll fix it.
+  </p>
+</section>
+
+<!-- ─── DOWNLOAD ──────────────────────────────────────────────────────────── -->
+<!--
+  The Linux card + package-manager links (Homebrew/Choco/Snap) stay hidden
+  until the Linux build gets the same automated install/launch/capture
+  validation the Windows build now has (.github/workflows/windows-smoke.yml).
+  The dl-linux ID (analytics.js) and the latest-release asset matching in the
+  bottom <script> are ready to switch back on when it does.
+-->
+<section class="download" id="download">
+  <h2 class="section-title">Download Pluks</h2>
+  <p class="download-sub">Free and tiny. No account required.</p>
+  <div class="platform-cards">
+    <div class="platform-card" id="card-mac">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+      </div>
+      <h3>macOS</h3>
+      <p>macOS 11+. One universal app for Apple Silicon &amp; Intel.</p>
+      <a class="btn-download" id="dl-mac-card" data-dl-mac href="https://github.com/darth-pixit/pluks-releases/releases/latest">Download .dmg</a>
+    </div>
+    <div class="platform-card" id="card-win">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+        </svg>
+      </div>
+      <h3>Windows <span class="pill">Beta</span></h3>
+      <p>Windows 10/11, 64-bit. Install- and run-tested on every release, but
+         newer than the Mac app — the feedback button (bottom right) reaches
+         us directly.</p>
+      <a class="btn-download" id="dl-win" data-dl-win href="https://github.com/darth-pixit/pluks-releases/releases/latest">Download .msi</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRIVACY & TELEMETRY ──────────────────────────────────────────────── -->
+<section class="privacy-blurb" id="privacy-blurb">
+  <h2 class="section-title">Privacy &amp; telemetry</h2>
+  <p class="download-sub">
+    Pluks is local-first, but anonymous usage data and crash reports help us
+    fix bugs and prioritize what to build next. Here's exactly what we do.
+  </p>
+  <ul class="privacy-bullets">
+    <li><strong>Passwords stay out of history.</strong> On macOS the app checks Accessibility before every capture — if focus is inside a secure text input (login, unlock prompt, password manager), Pluks never simulates a copy. On both macOS and Windows, anything a password manager marks with the standard concealed-clipboard flags is never read or stored. (Windows secure-field detection is in the works — until then, the concealed-clipboard convention is the Windows safeguard.)</li>
+    <li><strong>What we send:</strong> anonymous event counts (panel opens, history clicks, smart-paste use), error and crash stack traces, app/OS version, locale.</li>
+    <li><strong>What we never send:</strong> the text you copy, the websites you visit, your name or email, anything that could identify you.</li>
+    <li><strong>How to turn it off:</strong> desktop app → ⚙ Preferences → "Send anonymous usage stats". Website → respects Do Not Track.</li>
+  </ul>
+  <p class="ext-note"><a href="privacy.html">Read the full privacy policy →</a></p>
+</section>
+
+<!-- ─── FAQ ──────────────────────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <h2 class="section-title">FAQ</h2>
+  <details class="faq-item" id="faq-permission">
+    <summary>Why does Pluks ask for the macOS Accessibility permission?</summary>
+    <div class="faq-body">
+      <p>
+        macOS doesn't let apps read "whatever text is currently selected" directly.
+        So Pluks does what you would do: the moment you finish a selection, it presses
+        <kbd>⌘</kbd>+<kbd>C</kbd> for you. Sending that synthetic keystroke is exactly
+        what the Accessibility permission gates, and noticing your selection gesture
+        (the mouse drag or double-click) is what Input Monitoring gates. Granting them
+        is the one-time, ~10-second setup step.
+      </p>
+      <p>Here's everything the code does with that access:</p>
+      <ul>
+        <li>Listens for selection gestures — drags and double-clicks — so it knows when you've selected something.</li>
+        <li>Sends a synthetic <kbd>⌘</kbd>+<kbd>C</kbd> to the app you're in, so that app copies your selection.</li>
+        <li>Checks the focused field first and skips password inputs (secure text fields) entirely.</li>
+      </ul>
+      <p>
+        It never reads your screen, never logs what you type, and the text you copy never
+        leaves your machine. Pluks only ever sends a synthetic copy command to the app
+        you're already using — nothing about your selection is stored or transmitted.
+      </p>
+      <p>
+        On Windows there's no equivalent permission step — global input listening and
+        clipboard access work out of the box, so Pluks runs the moment it's installed.
+      </p>
+    </div>
+  </details>
+</section>
+
+<!-- ─── DOWNLOAD MODAL ────────────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="dl-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dl-modal-title">
+    <button class="modal-close" id="dl-modal-close" aria-label="Close">×</button>
+    <div class="modal-icon">✦</div>
+    <h3 id="dl-modal-title">One quick thing before you pluk</h3>
+    <p class="modal-sub">We'll send your download link and the occasional release note. No spam, unsubscribe anytime.</p>
+    <form id="dl-form" class="modal-form" novalidate>
+      <label class="modal-field">
+        <span>Work email</span>
+        <input type="email" id="dl-email" required placeholder="you@company.com" autocomplete="email">
+      </label>
+      <label class="modal-field">
+        <span>What best describes you?</span>
+        <select id="dl-persona" required>
+          <option value="" disabled selected>Pick your persona…</option>
+          <option value="engineer">Engineer / Developer</option>
+          <option value="designer">Designer</option>
+          <option value="pm">Product / Project Manager</option>
+          <option value="researcher">Researcher / Analyst</option>
+          <option value="writer">Writer / Editor</option>
+          <option value="marketing">Marketing / Sales</option>
+          <option value="support">Customer Support</option>
+          <option value="student">Student</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <button type="submit" class="btn-primary modal-submit">Start download</button>
+      <p class="modal-error" id="dl-error" hidden></p>
+    </form>
+  </div>
+</div>
+
+<!-- ─── FEEDBACK WIDGET ───────────────────────────────────────────────────── -->
+<div class="feedback-widget">
+  <button class="feedback-fab" id="feedback-fab" type="button"
+          aria-expanded="false" aria-controls="feedback-panel">
+    <span class="feedback-fab-icon" aria-hidden="true">✦</span>
+    <span class="feedback-fab-label">Feedback</span>
+  </button>
+  <div class="feedback-panel" id="feedback-panel" role="dialog"
+       aria-labelledby="feedback-title" hidden>
+    <button class="feedback-close" id="feedback-close" type="button" aria-label="Close">×</button>
+    <div class="feedback-icon" aria-hidden="true">✦</div>
+    <h3 id="feedback-title">Got feedback or a bug?</h3>
+    <p class="feedback-sub">Tell us what's working, what's broken, or what you'd love to see. We read every message.</p>
+    <form id="feedback-form" class="feedback-form" novalidate>
+      <label class="feedback-field">
+        <span>Your email <em>(optional, so we can reply)</em></span>
+        <input type="email" id="feedback-email" placeholder="you@example.com" autocomplete="email">
+      </label>
+      <label class="feedback-field">
+        <span>Message</span>
+        <textarea id="feedback-message" rows="4" required
+                  placeholder="What's on your mind?"></textarea>
+      </label>
+      <button type="submit" class="btn-primary feedback-submit">Send feedback</button>
+      <p class="feedback-error" id="feedback-error" hidden></p>
+      <p class="feedback-foot">Prefer email? Write to
+        <a href="mailto:parth.dixit@alumni.iitd.ac.in">parth.dixit@alumni.iitd.ac.in</a>.</p>
+    </form>
+    <div class="feedback-success" id="feedback-success" hidden>
+      <div class="feedback-success-icon" aria-hidden="true">✓</div>
+      <p>Thanks! Your email app should open with the message ready to send. If it
+         didn't, reach us at
+         <a href="mailto:parth.dixit@alumni.iitd.ac.in">parth.dixit@alumni.iitd.ac.in</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <span class="footer-brand">pluks</span>
+  <span class="footer-copy">© 2026 Parth Dixit · Made with ✦ and Rust</span>
+</footer>
+
+<script src="demo.js"></script>
+<script src="analytics.js"></script>
+<script src="feedback.js"></script>
+<script>
+// Returns true only when we can positively identify an Intel Mac. Anything
+// else — Apple Silicon, or undetectable — returns false so we default to the
+// Apple Silicon build. We avoid navigator.userAgent entirely because it always
+// says "Intel" on macOS regardless of the actual CPU.
+function isIntelMac() {
+  try {
+    // WebGL renderer is the most reliable cross-browser signal (Safari +
+    // Chrome): Apple Silicon GPUs report "Apple ..." while Intel Macs report
+    // an Intel/AMD/Radeon GPU.
+    var canvas = document.createElement('canvas');
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (gl) {
+      var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      var renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '') : '';
+      if (/apple/i.test(renderer)) return false;            // Apple GPU => Apple Silicon
+      if (/intel|amd|radeon|nvidia/i.test(renderer)) return true; // discrete/Intel GPU => Intel Mac
+    }
+  } catch (_) { /* ignore */ }
+
+  return false; // Inconclusive: default to Apple Silicon.
+}
+
+// Auto-resolve download links from the latest GitHub release so the website
+// never goes stale when a new version ships. Targets [data-dl-*] elements so
+// the same selector covers every CTA on the page (nav, hero, and the hidden
+// per-platform cards when they're re-enabled).
+fetch('https://api.github.com/repos/darth-pixit/pluks-releases/releases/latest')
+  .then(r => r.json())
+  .then(release => {
+    const assets = release.assets || [];
+    // Releases ship a single universal2 DMG that runs natively on both Apple
+    // Silicon and Intel, so prefer it and skip CPU detection entirely.
+    //
+    // The arch-aware fallback below only matters for older releases that still
+    // shipped separate _aarch64/_x64 DMGs. We CANNOT use navigator.userAgent
+    // there: every Mac browser — including Apple Silicon — reports "Intel Mac
+    // OS X" for web-compat reasons, so UA sniffing hands an Intel binary to
+    // everyone and Apple Silicon users get the "install Rosetta" prompt.
+    // isIntelMac() detects the real arch and we default to Apple Silicon (the
+    // overwhelmingly common Mac today) whenever detection is inconclusive.
+    const macAsset =
+      assets.find(a => /universal/i.test(a.name) && a.name.endsWith('.dmg')) ||
+      (isIntelMac() ? assets.find(a => a.name.endsWith('_x64.dmg')) : null) ||
+      assets.find(a => a.name.endsWith('_aarch64.dmg')) ||
+      assets.find(a => a.name.includes('.dmg'));
+    const winAsset   = assets.find(a => a.name.endsWith('_x64_en-US.msi') || a.name.endsWith('.msi'));
+    const linuxAsset = assets.find(a => a.name.endsWith('_amd64.AppImage'));
+    function setHrefs(selector, asset) {
+      if (!asset) return;
+      document.querySelectorAll(selector).forEach(el => { el.href = asset.browser_download_url; });
+    }
+    setHrefs('[data-dl-mac]',   macAsset);
+    setHrefs('[data-dl-win]',   winAsset);
+    setHrefs('[data-dl-linux]', linuxAsset);
+    // Show version badge if element exists
+    const badge = document.getElementById('version-badge');
+    if (badge && release.tag_name) badge.textContent = release.tag_name;
+  })
+  .catch(() => { /* fallback hrefs already point to /releases/latest */ });
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# robots.txt for https://pluks.app
+#
+# The marketing site is fully crawlable. Analytics ingest is served from a
+# separate subdomain (e.pluks.app, the PostHog reverse proxy) that is not part
+# of the indexable site and has its own robots policy.
+User-agent: *
+Allow: /
+
+Sitemap: https://pluks.app/sitemap.xml
