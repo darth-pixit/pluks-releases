@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pluks 0.9.1: A More Resilient Clipboard Helper</title>
+  <meta name="description" content="Pluks 0.9.1 improves stability around clipboard access, sleep and wake, and early-start input handling.">
+  <link rel="canonical" href="https://pluks.app/articles/pluks-0-9-1.html">
+  <meta property="og:type" content="article"><meta property="og:title" content="Pluks 0.9.1: A More Resilient Clipboard Helper"><meta property="og:description" content="Stability improvements for long-running desktop sessions."><meta property="og:url" content="https://pluks.app/articles/pluks-0-9-1.html">
+  <link rel="stylesheet" href="../style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Pluks 0.9.1: a more resilient clipboard helper","description":"Pluks 0.9.1 improves stability around clipboard access, sleep and wake, and early-start input handling.","datePublished":"2026-09-19","dateModified":"2026-09-19","author":{"@type":"Organization","name":"Pluks"},"publisher":{"@type":"Organization","name":"Pluks","url":"https://pluks.app/"},"mainEntityOfPage":"https://pluks.app/articles/pluks-0-9-1.html"}</script>
+</head>
+<body>
+  <nav class="nav article-nav"><a class="nav-brand" href="../" aria-label="Pluks home">pluks</a><a class="nav-ext" href="./">Articles</a><a class="nav-cta" href="https://github.com/darth-pixit/pluks-releases/releases/latest">Download free</a></nav>
+  <main class="article-page">
+    <header><p class="article-kicker">RELEASE NOTES · 2 MIN READ</p><h1>Pluks 0.9.1: a more resilient clipboard helper</h1><p class="article-dek">This release focuses on the kind of reliability work you should not have to notice: keeping Pluks running through long desktop sessions and unusual operating-system events.</p><p class="article-meta">By Pluks · Published September 19, 2026</p></header>
+    <article class="article-body">
+      <p><strong>Pluks 0.9.1 strengthens the app's native clipboard and input handling.</strong> The update is a stability release: it makes the desktop app more defensive when the operating system's clipboard service or input callbacks encounter an unexpected condition.</p>
+      <h2>What changed</h2>
+      <ul><li><strong>Safer macOS clipboard access.</strong> A temporary pasteboard-service failure—something that can happen around sleep, wake, or a service restart—now causes a skipped polling moment instead of taking down the app.</li><li><strong>Safer input callbacks.</strong> The selection listeners now guard against failures inside operating-system callbacks, including an edge case early after system startup.</li><li><strong>Better crash diagnostics.</strong> If a native failure does occur, Pluks can report limited, non-content diagnostic information on the next launch so the issue is easier to identify and fix.</li></ul>
+      <h2>Why it matters</h2>
+      <p>A clipboard helper runs quietly for long stretches. Reliability is therefore part of the feature: the app needs to stay out of the way when everything is normal and recover gracefully when the system is not. These changes concentrate on those uncommon moments rather than adding a new workflow for you to learn.</p>
+      <h2>How to get it</h2>
+      <p>Download the current release for macOS or Windows below. Existing installs that use the built-in updater will see the new version when their update check runs.</p>
+      <aside class="article-cta"><h2>Get Pluks 0.9.1</h2><p>Free for macOS and Windows. Your clipboard history stays local to your device.</p><a class="btn-primary" href="https://github.com/darth-pixit/pluks-releases/releases/latest">Download the latest Pluks release</a></aside>
+    </article>
+  </main>
+  <footer class="footer"><span class="footer-brand">pluks</span><span class="footer-copy">© 2026 Parth Dixit · Made with ✦ and Rust</span><a class="footer-link" href="./">More articles</a><a class="footer-link" href="../privacy.html">Privacy</a></footer>
+<script src="../analytics.js"></script></body>
+</html>
