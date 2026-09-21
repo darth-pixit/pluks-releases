@@ -109,6 +109,40 @@
     let pendingHref = null;
     let pendingPlatform = null;
 
+    // This deliberately checks the address structure rather than attempting to
+    // guess whether a mailbox exists. Mailbox ownership can only be confirmed
+    // by sending a verification email; this prevents malformed addresses from
+    // being saved or sent to the lead endpoint.
+    function isValidEmail(email) {
+      if (typeof email !== "string" || email.length > 254 || /[\s\x00-\x1F\x7F]/.test(email)) return false;
+
+      const at = email.lastIndexOf("@");
+      if (at < 1 || at !== email.indexOf("@")) return false;
+
+      const local = email.slice(0, at);
+      const domain = email.slice(at + 1);
+      if (local.length > 64 || local.startsWith(".") || local.endsWith(".") || local.includes("..")) return false;
+
+      // Require a dot-qualified domain and disallow empty or hyphen-bounded
+      // labels (e.g. jane@-company.com and jane@company-.com).
+      const labels = domain.split(".");
+      if (labels.length < 2 || labels.some(function (label) {
+        return !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/.test(label);
+      })) return false;
+
+      const tld = labels[labels.length - 1];
+      return /^[A-Za-z]{2,63}$/.test(tld) &&
+        /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/.test(local);
+    }
+
+    function validateEmailInput() {
+      const rawEmail = emailInput.value || "";
+      const email = rawEmail.trim();
+      const valid = rawEmail === email && isValidEmail(email);
+      emailInput.setCustomValidity(valid ? "" : "Enter a valid email address, such as you@company.com.");
+      return { email: email, valid: valid };
+    }
+
     function platformFromHref(href) {
       if (/dmg/i.test(href)) return /Intel|x64/i.test(href) ? "mac_intel" : "mac";
       if (/msi/i.test(href)) return "win";
@@ -163,14 +197,25 @@
       if (e.key === "Escape" && modal.classList.contains("show")) close("escape");
     });
 
+    emailInput.addEventListener("input", function () {
+      // Remove a prior error as soon as the corrected value is well-formed.
+      const rawEmail = emailInput.value || "";
+      if (rawEmail === rawEmail.trim() && isValidEmail(rawEmail)) {
+        emailInput.setCustomValidity("");
+        errorEl.hidden = true;
+      }
+    });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      const email = (emailInput.value || "").trim();
+      const emailResult = validateEmailInput();
+      const email = emailResult.email;
       const persona = personaInput.value;
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const emailOk = emailResult.valid;
       if (!emailOk || !persona) {
         errorEl.textContent = !emailOk ? "Please enter a valid work email." : "Please pick a persona.";
         errorEl.hidden = false;
+        if (!emailOk) emailInput.reportValidity();
         track("download_form_invalid", { reason: !emailOk ? "invalid_email" : "missing_persona" });
         return;
       }
