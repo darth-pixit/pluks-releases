@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pluks Pro — never lose what you type</title>
+  <meta name="description" content="Pluks Pro adds Draft Recovery: a local copy of the text box you're typing in, so a mis-delete, a closed tab or a swallowed chat prompt is one click from back. One payment, yours forever.">
+  <link rel="canonical" href="https://pluks.app/pro/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pluks">
+  <meta property="og:title" content="Pluks Pro — never lose what you type">
+  <meta property="og:description" content="Draft Recovery for macOS: get back the paragraph you deleted, the message you closed, the prompt the chat box ate. Local only. One-time purchase.">
+  <meta property="og:url" content="https://pluks.app/pro/">
+  <meta property="og:image" content="https://pluks.app/og-card.png?v=3">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .pro-wrap { max-width: 880px; margin: 0 auto; padding: 72px 24px 96px; }
+    .pro-kicker { color: var(--accent-3); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .pro-title { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; margin: 10px 0 16px; letter-spacing: -0.02em; }
+    .pro-title em { font-style: normal; color: var(--accent); }
+    .pro-lede { color: rgba(255,255,255,.7); font-size: 1.1rem; line-height: 1.6; max-width: 640px; }
+    .pro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 44px 0; }
+    .pro-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 18px 16px; }
+    .pro-tile h3 { font-size: 15px; margin: 8px 0 6px; }
+    .pro-tile p { color: rgba(255,255,255,.62); font-size: 14px; line-height: 1.55; }
+    .pro-tile .ico { font-size: 20px; color: var(--accent); }
+    .pro-steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 10px; margin: 18px 0 44px; }
+    .pro-steps li { counter-increment: s; display: flex; gap: 12px; align-items: flex-start; color: rgba(255,255,255,.75); line-height: 1.55; }
+    .pro-steps li::before { content: counter(s); flex: 0 0 26px; height: 26px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; display: grid; place-items: center; }
+    .pro-h2 { font-size: 1.35rem; font-weight: 700; margin: 8px 0 6px; }
+    .pro-privacy { background: rgba(252,76,2,.07); border: 1px solid rgba(252,76,2,.25); border-radius: 14px; padding: 20px 22px; margin: 0 0 44px; }
+    .pro-privacy ul { padding-left: 18px; margin-top: 8px; }
+    .pro-privacy li { color: rgba(255,255,255,.72); line-height: 1.7; font-size: 14.5px; }
+    .buy-card { background: var(--surface); border: 1px solid rgba(252,76,2,.35); border-radius: 18px; padding: 26px; max-width: 520px; box-shadow: 0 20px 60px rgba(0,0,0,.45); }
+    .buy-price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    .buy-amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; }
+    .buy-once { color: var(--muted); font-size: 14px; }
+    .cur-toggle { display: inline-flex; background: rgba(255,255,255,.06); border-radius: 9px; padding: 3px; margin-left: auto; }
+    .cur-toggle button { background: none; border: 0; color: var(--muted); font: 600 12px/1 Inter, sans-serif; padding: 6px 10px; border-radius: 7px; cursor: pointer; }
+    .cur-toggle button[aria-pressed="true"] { background: rgba(255,255,255,.12); color: #fff; }
+    .buy-list { list-style: none; padding: 0; margin: 14px 0 18px; display: grid; gap: 6px; }
+    .buy-list li { color: rgba(255,255,255,.75); font-size: 14px; }
+    .buy-list li::before { content: "✓"; color: var(--accent); font-weight: 700; margin-right: 8px; }
+    .buy-form { display: grid; gap: 10px; }
+    .buy-form label { font-size: 13px; color: rgba(255,255,255,.7); }
+    .buy-input { width: 100%; background: rgba(0,0,0,.35); border: 1px solid var(--border); border-radius: 10px; color: #fff; font: 400 15px Inter, sans-serif; padding: 12px 14px; outline: none; }
+    .buy-input:focus { border-color: var(--accent); }
+    .buy-btn { border: 0; cursor: pointer; justify-content: center; font-family: inherit; }
+    .buy-btn[disabled] { opacity: .6; cursor: default; transform: none; }
+    .buy-fine { color: var(--muted); font-size: 12.5px; line-height: 1.6; margin-top: 10px; }
+    .buy-fine a { color: var(--accent-3); }
+    .buy-error { color: #FCA5A5; font-size: 13.5px; }
+    .buy-success h3 { font-size: 1.3rem; margin-bottom: 8px; }
+    .buy-success p { color: rgba(255,255,255,.72); line-height: 1.6; font-size: 14.5px; }
+    .license-box { margin: 14px 0; padding: 12px 14px; background: rgba(0,0,0,.35); border: 1px solid var(--border); border-radius: 10px; font: 12.5px/1.5 ui-monospace, Menlo, monospace; word-break: break-all; color: #fff; }
+    .copy-btn { background: rgba(255,255,255,.08); color: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font: 600 13px Inter, sans-serif; cursor: pointer; }
+    .resend { margin-top: 28px; color: rgba(255,255,255,.65); font-size: 14px; }
+    .resend form { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .resend .buy-input { flex: 1; min-width: 200px; padding: 10px 12px; font-size: 14px; }
+    .pro-faq details { border-top: 1px solid var(--border); padding: 14px 0; }
+    .pro-faq summary { cursor: pointer; font-weight: 600; }
+    .pro-faq p { color: rgba(255,255,255,.66); line-height: 1.65; margin-top: 8px; font-size: 14.5px; }
+    .pro-section { margin: 56px 0 0; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-brand" href="/" style="text-decoration:none;">pluks</a>
+  <a class="nav-cta" href="/">Get Pluks free</a>
+</nav>
+
+<main class="pro-wrap">
+  <p class="pro-kicker">Pluks Pro · macOS</p>
+  <h1 class="pro-title">Never lose what you <em>type</em>.</h1>
+  <p class="pro-lede">
+    Deleted a paragraph by accident? Closed the tab mid-message? Hit Enter and the chat
+    box ate your prompt? <strong>Draft Recovery</strong> keeps a local copy of the text box
+    you're typing in — so the words you lost are one click from back, in the same panel
+    as your clipboard history.
+  </p>
+
+  <div class="pro-grid" aria-label="What Draft Recovery catches">
+    <div class="pro-tile"><div class="ico" aria-hidden="true">⌫</div><h3>Select-all, oops</h3><p>⌘A then a stray key wipes a paragraph. The version before it is saved, marked <em>Before select-all</em>.</p></div>
+    <div class="pro-tile"><div class="ico" aria-hidden="true">↩</div><h3>The prompt that vanished</h3><p>Sent into an error, a reload, a login wall. Whatever was in the box when you pressed Enter is kept.</p></div>
+    <div class="pro-tile"><div class="ico" aria-hidden="true">✕</div><h3>Closed too soon</h3><p>Tab, window or app gone mid-sentence. Your last pause is in the Drafts tab.</p></div>
+  </div>
+
+  <h2 class="pro-h2">How it works</h2>
+  <ol class="pro-steps">
+    <li>Turn it on once in Pluks. You get a 14-day free trial, no card.</li>
+    <li>Type anywhere — ChatGPT, Claude, Gmail, Slack, Notes, any text box.</li>
+    <li>When you pause, Pluks saves what's in the box. Deletes and sends are marked so you can find the version you want.</li>
+    <li>Press <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd>, open <strong>Drafts</strong>, and paste it back.</li>
+  </ol>
+
+  <div class="pro-privacy">
+    <h2 class="pro-h2">Private by design</h2>
+    <ul>
+      <li><strong>No keystroke logging.</strong> Pluks notices <em>that</em> you're typing, never which keys.</li>
+      <li><strong>Stays on your Mac.</strong> Drafts are never uploaded and never in analytics.</li>
+      <li><strong>Skips what it should:</strong> password fields, password managers, terminals, code editors, and any app you block.</li>
+      <li><strong>Forgets on schedule:</strong> drafts delete themselves after 30 days (or 1 or 7 — your call).</li>
+    </ul>
+    <p class="buy-fine" style="margin-top:6px">Full details in the <a href="../privacy.html">privacy policy</a>.</p>
+  </div>
+
+  <section class="buy-card" id="buy" aria-labelledby="buy-title">
+    <div id="buy-form-wrap">
+      <div class="buy-price">
+        <span class="buy-amount" id="buy-amount" aria-live="polite">$9</span>
+        <span class="buy-once">once · yours forever</span>
+        <div class="cur-toggle" role="group" aria-label="Currency">
+          <button type="button" data-cur="USD" aria-pressed="true">USD</button>
+          <button type="button" data-cur="INR" aria-pressed="false">INR</button>
+        </div>
+      </div>
+      <h2 class="pro-h2" id="buy-title" style="margin-top:6px">Pluks Pro — lifetime</h2>
+      <ul class="buy-list">
+        <li>Draft Recovery on every Mac you use</li>
+        <li>All future Pro features, no subscription</li>
+        <li>Pluks itself stays free</li>
+      </ul>
+      <form class="buy-form" id="buy-form" novalidate>
+        <label for="buy-email">Email for your license key</label>
+        <input class="buy-input" id="buy-email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <button class="btn-primary buy-btn" id="buy-btn" type="submit">Buy Pluks Pro</button>
+        <p class="buy-error" id="buy-error" role="alert" hidden></p>
+      </form>
+      <p class="buy-fine" id="buy-from-app" hidden>You started from the Pluks app — it will switch to Pro by itself once you've paid.</p>
+      <p class="buy-fine">
+        Secure checkout by Razorpay (cards, UPI, net banking, wallets). Your key arrives on this page and by email instantly.
+        14-day no-questions refund — see <a href="../refund.html">refunds</a> and <a href="../terms.html">terms</a>.
+      </p>
+    </div>
+
+    <div class="buy-success" id="buy-success" hidden>
+      <h3>✦ You're Pro. Thank you!</h3>
+      <p id="success-app" hidden>Pluks has picked up your license — head back to the app, Draft Recovery is unlocked.</p>
+      <p>Your license key (also sent to <strong id="success-email"></strong>):</p>
+      <div class="license-box" id="license-box"></div>
+      <button type="button" class="copy-btn" id="copy-btn">Copy key</button>
+      <p class="buy-fine">To use it on another Mac: Pluks → Preferences → Draft Recovery → License → paste → Activate.</p>
+    </div>
+  </section>
+
+  <div class="resend" id="resend">
+    Already bought? Lost the key?
+    <form id="resend-form" novalidate>
+      <input class="buy-input" id="resend-email" type="email" autocomplete="email" placeholder="Email you bought with" aria-label="Email you bought with">
+      <button class="copy-btn" type="submit">Resend my key</button>
+    </form>
+    <p class="buy-fine" id="resend-done" role="status" hidden>If that address bought Pluks Pro, the key is on its way.</p>
+  </div>
+
+  <section class="pro-section pro-faq" aria-label="Questions">
+    <h2 class="pro-h2">Questions</h2>
+    <details><summary>Does Pluks record my keystrokes?</summary>
+      <p>No. The keyboard listener Pluks already uses for select-to-copy only learns that <em>a</em> key was pressed and which kind (typing, delete, enter). After you pause, Pluks reads the text box once through macOS Accessibility — the same way a screen reader would — and saves it on your Mac.</p></details>
+    <details><summary>Which apps does it work in?</summary>
+      <p>Anything with a standard macOS text field or text area: Safari, Chrome, Arc, Edge and Brave (including ChatGPT, Claude and Gmail), Slack, Discord, Notion, Notes, Mail, Messages and more. Rich text comes back as plain text. Google Docs is not covered — it draws on a canvas and autosaves anyway.</p></details>
+    <details><summary>Windows?</summary>
+      <p>Draft Recovery is macOS-only for now; Windows support is being built. A lifetime license will cover it when it ships.</p></details>
+    <details><summary>What happens after the trial?</summary>
+      <p>New drafts stop being saved. Everything already saved stays readable until it expires — we never hold your text hostage.</p></details>
+    <details><summary>Can I get a refund?</summary>
+      <p>Yes — within 14 days, no questions. Reply to your license email. See <a href="../refund.html" style="color:var(--accent-3)">refunds</a>.</p></details>
+  </section>
+</main>
+
+<footer class="footer">
+  <span class="footer-brand">pluks</span>
+  <span class="footer-copy">© 2026 Parth Dixit · Made with ✦ and Rust</span>
+  <a class="footer-link" href="../privacy.html">Privacy</a>
+  <a class="footer-link" href="../terms.html">Terms</a>
+  <a class="footer-link" href="../refund.html">Refunds</a>
+  <a class="footer-link" href="mailto:parth.dixit@alumni.iitd.ac.in">Contact</a>
+</footer>
+<script src="pro.js"></script>
+</body>
+</html>
